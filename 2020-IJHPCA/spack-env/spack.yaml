@@ -6,8 +6,9 @@ spack:
   - py-tqdm
   - py-matplotlib
   - lua@5.1.4
-  - flux-sched@master
   - stream
   - hpl
+  - flux-sched@master
+  - gcc@8.4.0
   concretization: together
-  view: /home/herbein1/spack-views/hierarchical-sched
+  view: /home/chathawa/spack-views/hierarchical-sched
