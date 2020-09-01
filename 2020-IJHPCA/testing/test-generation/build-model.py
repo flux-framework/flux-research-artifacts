@@ -29,7 +29,7 @@ def build_model(template_dir, output_dir, job_gen_type, repetition, **kwargs):
             )
             hours = int(est_minutes // 60)
             minutes = int(est_minutes % 60)
-            kwargs["timelimit"] = "{:02d}:{:02d}:00".format(hours, minutes)
+            kwargs["timelimit"] = "{:02d}:{:02d}".format(hours, minutes)
             make_test(
                 topology,
                 num_jobs,
@@ -49,7 +49,7 @@ def just_hierarchy_setup(
     fake_jobs_kwargs = kwargs.copy()
     fake_jobs_kwargs["command"] = "sleep 0"
     fake_jobs_kwargs["unique_id"] = "setup"
-    fake_jobs_kwargs["timelimit"] = "00:05:00"
+    fake_jobs_kwargs["timelimit"] = "00:05"
     fake_jobs_kwargs["just_setup"] = True
 
     for topology in topologies:
@@ -70,7 +70,7 @@ def just_hierarchy_setup(
     fake_jobs_kwargs = kwargs.copy()
     fake_jobs_kwargs["command"] = "flux mini submit -n1 -c1 sleep 0"
     fake_jobs_kwargs["unique_id"] = "sleep0"
-    fake_jobs_kwargs["timelimit"] = "00:15:00"
+    fake_jobs_kwargs["timelimit"] = "00:15"
 
     branch_factors = {bf for topo in topologies for bf in topo}
     for bf in branch_factors:
@@ -96,10 +96,12 @@ def main():
     kwargs["command"] = common.get_command(args.unique_id)
     output_dir = common.get_output_dir("model", args)
     assert os.path.isdir(template_dir), template_dir
-    assert os.path.isdir(output_dir), output_dir
 
-    num_nodes = 32
-    topologies = [[1], [1, num_nodes], [1, num_nodes, num_cores_per_node]]
+    if not os.path.isdir(output_dir):
+        os.mkdir(output_dir)
+
+    num_nodes = 2
+    topologies = [[1], [1, 32], [1, num_nodes], [1, num_nodes, num_cores_per_node]]
 
     repetitions = range(1) if args.small_scale or args.medium_scale else range(3)
     if args.repetitions:
@@ -121,6 +123,6 @@ if __name__ == "__main__":
     parser = common.get_parser()
     args = parser.parse_args()
 
-    num_cores_per_node = 36
+    num_cores_per_node = 32
 
     main()

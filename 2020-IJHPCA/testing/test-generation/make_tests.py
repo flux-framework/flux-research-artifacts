@@ -140,6 +140,7 @@ def make_test(
         "num_jobs": num_jobs,
         "num_nodes": num_nodes,
         "cores_per_node": cores_per_node,
+        "num_cores": num_cores,
         "repetition": repetition,
         "job_gen_type": job_gen_type,
         "timelimit": timelimit,
@@ -148,7 +149,7 @@ def make_test(
         "runtime": runtime,
         "direct": direct,
         # 'tasklist' is included in kwargs
-        "slurm_output_file": os.path.join(test_dir, "slurm.out"),
+        "output_file": os.path.join(test_dir, "stdout.log"),
         "log_dir": log_dir,
         "results_dir": results_dir,
         "persist_dir": persist_dir,

@@ -24,7 +24,7 @@ def variable_num_jobs(
             )
             hours = int(est_minutes // 60)
             minutes = int(est_minutes % 60)
-            kwargs["timelimit"] = "{:02d}:{:02d}:00".format(hours, minutes)
+            kwargs["timelimit"] = "{:02d}:{:02d}".format(hours, minutes)
             make_test(
                 topology,
                 num_jobs,
@@ -45,7 +45,9 @@ def main():
     kwargs["command"] = common.get_command(args.unique_id)
     output_dir = common.get_output_dir("multi-level", args)
     assert os.path.isdir(template_dir), template_dir
-    assert os.path.isdir(output_dir), output_dir
+    
+    if not os.path.isdir(output_dir):
+        os.mkdir(output_dir)
 
     if args.small_scale:
         num_nodes = 2
@@ -54,8 +56,9 @@ def main():
         num_nodes = 8
         topologies = [[1], [4], [2, 4]]
     else:
-        num_nodes = 32
-        topologies = [[1], [1, num_nodes], [1, num_nodes, num_cores_per_node]]
+        num_nodes = 2
+        topologies = [[1], [1, 32], [1, num_nodes], [1, num_nodes, num_cores_per_node]]
+        # [[1], [1, num_nodes], [1, num_nodes, num_cores_per_node]]
 
     repetitions = range(1) if args.small_scale or args.medium_scale else range(3)
     if args.repetitions:
@@ -76,6 +79,6 @@ if __name__ == "__main__":
     parser = common.get_parser()
     args = parser.parse_args()
 
-    num_cores_per_node = 36
+    num_cores_per_node = 32
 
     main()

@@ -18,6 +18,10 @@ do
             EXTRA_FLAGS="--repetitions=$2"${EXTRA_FLAGS:+" $EXTRA_FLAGS"}
             shift
             ;;
+        -o|--out-path)
+            EXTRA_FLAGS="--out_path=$2"${EXTRA_FLAGS:+" $EXTRA_FLAGS"}
+            shift
+            ;;
         -h|--help)
             echo ' Options:
     -h|--help
@@ -32,7 +36,8 @@ do
     shift # past argument or value
 done
 
-for app in sleep0 sleep5 stream firestarter; do
-    ./variable-num-jobs.py -u $app ${EXTRA_FLAGS}
-    ./build-model.py -u $app ${EXTRA_FLAGS}
+# NOTE: limiting tests for now to sleep0 and sleep5
+for app in sleep0 sleep5; do
+    ./testing/test-generation/variable-num-jobs.py -u $app ${EXTRA_FLAGS}
+    ./testing/test-generation/build-model.py -u $app ${EXTRA_FLAGS}
 done
