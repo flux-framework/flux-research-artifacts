@@ -29,7 +29,7 @@ def get_parser():
         "-o",
         "--out_path",
         help="base path for output",
-        default="/p/lquake/herbein1",
+        default="/home/chathawa/flux-output",
     )
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("--repetitions", type=int)
